@@ -31,17 +31,26 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
 
+        $email = strtolower(trim((string) $request->input('email')));
+
         try {
             $status = Password::sendResetLink(
-                $request->only('email')
+                ['email' => $email]
             );
 
-            return $status == Password::RESET_LINK_SENT
-                        ? back()->with('status', __($status))
-                        : back()->with('status', __('If your email exists in our system, we have emailed your password reset link.'));
+            if ($status === Password::RESET_LINK_SENT) {
+                return back()->with('status', __($status));
+            }
+
+            if ($status === Password::RESET_THROTTLED) {
+                return back()->withInput(['email' => $email])
+                    ->withErrors(['email' => __('Please wait a moment before requesting another reset link.')]);
+            }
+
+            return back()->with('status', __('If your email exists in our system, we have emailed your password reset link.'));
         } catch (Throwable $exception) {
             Log::error('Password reset email send failed.', [
-                'email' => $request->input('email'),
+                'email' => $email,
                 'message' => $exception->getMessage(),
             ]);
 
