@@ -38,6 +38,11 @@ class PasswordResetLinkController extends Controller
                 ['email' => $email]
             );
 
+            Log::info('Password reset request processed.', [
+                'email' => $email,
+                'status' => $status,
+            ]);
+
             if ($status === Password::RESET_LINK_SENT) {
                 return back()->with('status', __($status));
             }
@@ -47,7 +52,8 @@ class PasswordResetLinkController extends Controller
                     ->withErrors(['email' => __('Please wait a moment before requesting another reset link.')]);
             }
 
-            return back()->with('status', __('If your email exists in our system, we have emailed your password reset link.'));
+            return back()->withInput(['email' => $email])
+                ->withErrors(['email' => __('We could not send a reset link right now. Please verify the email and try again.')]);
         } catch (Throwable $exception) {
             Log::error('Password reset email send failed.', [
                 'email' => $email,
