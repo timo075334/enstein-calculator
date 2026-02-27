@@ -3,8 +3,11 @@
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <div class="mb-4 rounded-md border border-green-300 bg-green-50 px-3 py-2 text-sm font-medium text-green-800">
+            {{ session('status') }}
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
