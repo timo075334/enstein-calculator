@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -26,9 +27,11 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->user()?->forceFill([
-            'last_login_at' => now(),
-        ])->save();
+        if (Schema::hasColumn('users', 'last_login_at')) {
+            $request->user()?->forceFill([
+                'last_login_at' => now(),
+            ])->save();
+        }
 
         $request->session()->regenerate();
 
