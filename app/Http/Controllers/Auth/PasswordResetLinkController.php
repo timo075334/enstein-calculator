@@ -60,7 +60,8 @@ class PasswordResetLinkController extends Controller
                 'message' => $exception->getMessage(),
             ]);
 
-            return back()->with('status', __('If your email exists in our system, we have emailed your password reset link.'));
+            return back()->withInput(['email' => $email])
+                ->withErrors(['email' => __('We could not send the reset link right now. Please try again in a moment.')]);
         }
     }
 }
