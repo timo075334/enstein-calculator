@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="mt-5 flex flex-col gap-2 sm:flex-row">
-                        <a href="{{ route('calculator') }}" class="inline-flex items-center justify-center rounded border border-black bg-black px-4 py-2 text-sm font-medium text-black">Open Calculator</a>
+                        <a href="{{ route('calculator') }}" class="inline-flex items-center justify-center rounded border border-black bg-white px-4 py-2 text-sm font-medium text-black">Open Calculator</a>
                         <a href="{{ route('profile.edit') }}" class="inline-flex items-center justify-center rounded border border-black bg-white px-4 py-2 text-sm font-medium text-black">Manage Profile</a>
                         <a href="{{ route('home') }}" class="inline-flex items-center justify-center rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-black">Back to Home</a>
                     </div>
